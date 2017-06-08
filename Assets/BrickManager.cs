@@ -22,4 +22,9 @@ public class BrickManager : MonoBehaviour {
     {
         rend.material.color = originalColor;
     }
+
+    public void OnSelect()
+    {
+        print("did select");
+    }
 }
