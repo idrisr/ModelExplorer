@@ -8,6 +8,7 @@ using UnityEngine;
 public class InteractibleManager : Singleton<InteractibleManager>
 {
     public GameObject FocusedGameObject { get; private set; }
+    public GameObject SelectedGameObject { get; private set; }
 
     private GameObject oldFocusedGameObject = null;
 

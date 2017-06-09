@@ -8,29 +8,106 @@ namespace Academy.HoloToolkit.Unity
     /// </summary>
     public class GestureManager : MonoBehaviour
     {
-        private GestureRecognizer gestureRecognizer;
+        private GestureRecognizer NavigationRecognizer;
+        private GestureRecognizer ManipulationRecognizer;
+        private GestureRecognizer ActiveRecognizer;
 
-        void Start()
+        void Awake()
         {
-            gestureRecognizer = new GestureRecognizer();
-            gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap);
+            NavigationRecognizer = new GestureRecognizer();
+            NavigationRecognizer.SetRecognizableGestures(GestureSettings.Tap);
+            NavigationRecognizer.TappedEvent += NavigationRecognizer_TappedEvent;
 
-            gestureRecognizer.TappedEvent += (source, tapCount, ray) =>
+            ManipulationRecognizer = new GestureRecognizer();
+            ManipulationRecognizer.SetRecognizableGestures(GestureSettings.ManipulationTranslate);
+            ManipulationRecognizer.ManipulationStartedEvent += ManipulationRecognizer_ManipulationStartedEvent;
+            ManipulationRecognizer.ManipulationUpdatedEvent += ManipulationRecognizer_ManipulationUpdatedEvent;
+            ManipulationRecognizer.ManipulationCompletedEvent += ManipulationRecognizer_ManipulationCompletedEvent;
+            ManipulationRecognizer.ManipulationCanceledEvent += ManipulationRecognizer_ManipulationCanceledEvent;
+
+            ResetGestureRecognizers();
+        }
+
+        public void ResetGestureRecognizers()
+        {
+            // Default to the navigation gestures.
+            Transition(NavigationRecognizer);
+        }
+
+        private void Transition(GestureRecognizer newRecognizer)
+        {
+            if (newRecognizer == null)
             {
-                GameObject focusedObject = InteractibleManager.Instance.FocusedGameObject;
+                return;
+            }
 
-                if (focusedObject != null)
+            if (ActiveRecognizer != null)
+            {
+                if (ActiveRecognizer == newRecognizer)
                 {
-                    focusedObject.SendMessage("OnSelect");
+                    return;
                 }
-            };
 
-            gestureRecognizer.StartCapturingGestures();
+                ActiveRecognizer.CancelGestures();
+                ActiveRecognizer.StopCapturingGestures();
+            }
+
+            newRecognizer.StartCapturingGestures();
+            ActiveRecognizer = newRecognizer;
         }
 
         void OnDestroy()
         {
-            gestureRecognizer.StopCapturingGestures();
+            NavigationRecognizer.StopCapturingGestures();
+            ManipulationRecognizer.StopCapturingGestures();
+        }
+
+        private void NavigationRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray ray)
+        {
+            if (FocusSelectable())
+            {
+                InteractibleManager.Instance.FocusedGameObject.SendMessage("OnTapped");
+                Transition(ManipulationRecognizer);
+            }
+        }
+
+        private void ManipulationRecognizer_ManipulationStartedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
+        {
+            if (FocusSelectable())
+            {
+                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationStart", position);
+            }
+        }
+
+        private void ManipulationRecognizer_ManipulationUpdatedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
+        {
+            if (FocusSelectable())
+            {
+                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationUpdate", position);
+            }
+        }
+
+        private void ManipulationRecognizer_ManipulationCompletedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
+        {
+            if (FocusSelectable())
+            {
+                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
+                Transition(NavigationRecognizer);
+            }
+        }
+
+        private void ManipulationRecognizer_ManipulationCanceledEvent(InteractionSourceKind source, Vector3 position, Ray ray)
+        {
+            if (FocusSelectable())
+            {
+                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
+                Transition(NavigationRecognizer);
+            }
+        }
+
+        private bool FocusSelectable() {
+            GameObject focusedObject = InteractibleManager.Instance.FocusedGameObject;
+            return (focusedObject != null && focusedObject.GetComponent<Interactible>() != null);
         }
     }
 }
