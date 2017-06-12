@@ -11,6 +11,7 @@ namespace Academy.HoloToolkit.Unity
         private GestureRecognizer NavigationRecognizer;
         private GestureRecognizer ManipulationRecognizer;
         private GestureRecognizer ActiveRecognizer;
+        private bool isManipulating;
 
         void Awake()
         {
@@ -41,6 +42,14 @@ namespace Academy.HoloToolkit.Unity
                 return;
             }
 
+            if (newRecognizer == ManipulationRecognizer)
+            {
+                isManipulating = true;
+            }
+            else {
+                isManipulating = false;
+            }
+
             if (ActiveRecognizer != null)
             {
                 if (ActiveRecognizer == newRecognizer)
@@ -64,7 +73,7 @@ namespace Academy.HoloToolkit.Unity
 
         private void NavigationRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray ray)
         {
-            if (FocusSelectable())
+            if (FocusSelectable() && !isManipulating)
             {
                 InteractibleManager.Instance.FocusedGameObject.SendMessage("OnTapped");
                 Transition(ManipulationRecognizer);
