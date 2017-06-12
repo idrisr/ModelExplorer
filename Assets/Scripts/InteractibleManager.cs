@@ -19,6 +19,11 @@ public class InteractibleManager : Singleton<InteractibleManager>
 
     void Update()
     {
+        // if we're manipulating an object, dont change the focused object, and bounce out early
+        if (GestureManager.Instance.isManipulating) {
+            return;
+        }
+
         oldFocusedGameObject = FocusedGameObject;
 
         if (GazeManager.Instance.Hit)

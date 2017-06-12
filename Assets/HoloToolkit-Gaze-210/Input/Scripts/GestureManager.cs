@@ -6,12 +6,12 @@ namespace Academy.HoloToolkit.Unity
     /// <summary>
     /// GestureManager contains event handlers for subscribed gestures.
     /// </summary>
-    public class GestureManager : MonoBehaviour
+    public class GestureManager : Singleton<GestureManager>
     {
         private GestureRecognizer NavigationRecognizer;
         private GestureRecognizer ManipulationRecognizer;
         private GestureRecognizer ActiveRecognizer;
-        private bool isManipulating;
+        public bool isManipulating;
 
         void Awake()
         {
@@ -42,14 +42,6 @@ namespace Academy.HoloToolkit.Unity
                 return;
             }
 
-            if (newRecognizer == ManipulationRecognizer)
-            {
-                isManipulating = true;
-            }
-            else {
-                isManipulating = false;
-            }
-
             if (ActiveRecognizer != null)
             {
                 if (ActiveRecognizer == newRecognizer)
@@ -73,7 +65,7 @@ namespace Academy.HoloToolkit.Unity
 
         private void NavigationRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray ray)
         {
-            if (FocusSelectable() && !isManipulating)
+            if (FocusSelectable())
             {
                 InteractibleManager.Instance.FocusedGameObject.SendMessage("OnTapped");
                 Transition(ManipulationRecognizer);
