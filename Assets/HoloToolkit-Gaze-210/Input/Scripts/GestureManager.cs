@@ -11,6 +11,7 @@ namespace Academy.HoloToolkit.Unity
         private GestureRecognizer NavigationRecognizer;
         private GestureRecognizer ManipulationRecognizer;
         private GestureRecognizer ActiveRecognizer;
+        public bool isManipulating;
 
         void Awake()
         {
@@ -70,6 +71,7 @@ namespace Academy.HoloToolkit.Unity
 
         private void ManipulationRecognizer_ManipulationStartedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
+            isManipulating = true;
             InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationStart", position);
         }
 
@@ -80,12 +82,14 @@ namespace Academy.HoloToolkit.Unity
 
         private void ManipulationRecognizer_ManipulationCompletedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
+            isManipulating = false;
             InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
             Transition(NavigationRecognizer);
         }
 
         private void ManipulationRecognizer_ManipulationCanceledEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
+            isManipulating = false;
             InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
             Transition(NavigationRecognizer);
         }

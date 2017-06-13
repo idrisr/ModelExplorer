@@ -8,7 +8,6 @@ public class BrickManager : MonoBehaviour {
     private Color originalColor;
     private Vector3 manipulationPreviousPosition;
     private Rigidbody rb;
-    private bool isManipulating;
 
     void Awake()
     {
@@ -16,27 +15,16 @@ public class BrickManager : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         rend.enabled = true;
         originalColor = rend.material.color;
-        isManipulating = false;
     }
 
     public void GazeEntered()
     {
-        // do nothing with the gaze if manipulating
-        if (isManipulating) {
-            return;
-        }
-
         print(name + " :Gaze Entered");
         rend.material.color = Color.yellow;
     }
 
     public void GazeExited()
     {
-        // do nothing with the gaze if manipulating
-        if (isManipulating) {
-            return;
-        }
-
         print(name + " :Gaze Exited");
         rend.material.color = originalColor;
     }
@@ -45,16 +33,10 @@ public class BrickManager : MonoBehaviour {
     {
         print(name + " :On Tapped");
         rend.material.color = Color.red;
-        isManipulating = true;
     }
     
     void PerformManipulationStart(Vector3 position)
     {
-        // do nothing if not manipulating
-        if (!isManipulating) {
-            return;
-        }
-
         print(name + " :Manipulate Start");
         rb.isKinematic = true;
         manipulationPreviousPosition = position;
@@ -62,15 +44,10 @@ public class BrickManager : MonoBehaviour {
 
     void PerformManipulationUpdate(Vector3 position)
     {
-        // do nothing if not manipulating
-        if (!isManipulating) {
-            return;
-        }
-
         print(name + " :Manipulate Update");
         Vector3 moveVector = Vector3.zero;
         // 4.a: Calculate the moveVector as position - manipulationPreviousPosition.
-        moveVector = (position * 5) - manipulationPreviousPosition;
+        moveVector = (position * 2) - manipulationPreviousPosition;
         // 4.a: Update the manipulationPreviousPosition with the current position.
         manipulationPreviousPosition = position;
 
@@ -79,14 +56,8 @@ public class BrickManager : MonoBehaviour {
     }
 
     void PerformManipulationEnd() {
-        // do nothing if not manipulating
-        if (!isManipulating) {
-            return;
-        }
-
         print(name + " :Manipulate End");
         rb.isKinematic = false;
-        isManipulating = false;
         rend.material.color = originalColor;
     }
 }

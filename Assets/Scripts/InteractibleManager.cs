@@ -17,8 +17,16 @@ public class InteractibleManager : Singleton<InteractibleManager>
         FocusedGameObject = null;
     }
 
+    bool ShouldSendGazeEvents() {
+        return !GestureManager.Instance.isManipulating;
+    }
+
     void Update()
     {
+        if (!ShouldSendGazeEvents()) {
+            return;
+        }
+
         oldFocusedGameObject = FocusedGameObject;
 
         if (GazeManager.Instance.Hit)
