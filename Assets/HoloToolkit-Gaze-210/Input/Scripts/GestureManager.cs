@@ -11,7 +11,6 @@ namespace Academy.HoloToolkit.Unity
         private GestureRecognizer NavigationRecognizer;
         private GestureRecognizer ManipulationRecognizer;
         private GestureRecognizer ActiveRecognizer;
-        public bool isManipulating;
 
         void Awake()
         {
@@ -65,45 +64,30 @@ namespace Academy.HoloToolkit.Unity
 
         private void NavigationRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray ray)
         {
-            if (FocusSelectable())
-            {
-                InteractibleManager.Instance.FocusedGameObject.SendMessage("OnTapped");
-                Transition(ManipulationRecognizer);
-            }
+            InteractibleManager.Instance.FocusedGameObject.SendMessage("OnTapped");
+            Transition(ManipulationRecognizer);
         }
 
         private void ManipulationRecognizer_ManipulationStartedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
-            if (FocusSelectable())
-            {
-                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationStart", position);
-            }
+            InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationStart", position);
         }
 
         private void ManipulationRecognizer_ManipulationUpdatedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
-            if (FocusSelectable())
-            {
-                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationUpdate", position);
-            }
+            InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationUpdate", position);
         }
 
         private void ManipulationRecognizer_ManipulationCompletedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
-            if (FocusSelectable())
-            {
-                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
-                Transition(NavigationRecognizer);
-            }
+            InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
+            Transition(NavigationRecognizer);
         }
 
         private void ManipulationRecognizer_ManipulationCanceledEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
-            if (FocusSelectable())
-            {
-                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
-                Transition(NavigationRecognizer);
-            }
+            InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
+            Transition(NavigationRecognizer);
         }
 
         private bool FocusSelectable() {
