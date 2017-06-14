@@ -8,65 +8,32 @@ namespace Academy.HoloToolkit.Unity
     /// </summary>
     public class GestureManager : Singleton<GestureManager>
     {
-        private GestureRecognizer NavigationRecognizer;
         private GestureRecognizer ManipulationRecognizer;
-        private GestureRecognizer ActiveRecognizer;
         public bool isManipulating;
 
         void Awake()
         {
-            NavigationRecognizer = new GestureRecognizer();
-            NavigationRecognizer.SetRecognizableGestures(GestureSettings.Tap);
-            NavigationRecognizer.TappedEvent += NavigationRecognizer_TappedEvent;
-
             ManipulationRecognizer = new GestureRecognizer();
             ManipulationRecognizer.SetRecognizableGestures(GestureSettings.ManipulationTranslate);
             ManipulationRecognizer.ManipulationStartedEvent += ManipulationRecognizer_ManipulationStartedEvent;
             ManipulationRecognizer.ManipulationUpdatedEvent += ManipulationRecognizer_ManipulationUpdatedEvent;
             ManipulationRecognizer.ManipulationCompletedEvent += ManipulationRecognizer_ManipulationCompletedEvent;
             ManipulationRecognizer.ManipulationCanceledEvent += ManipulationRecognizer_ManipulationCanceledEvent;
-
-            ResetGestureRecognizers();
         }
 
-        public void ResetGestureRecognizers()
+        void Start()
         {
-            // Default to the navigation gestures.
-            Transition(NavigationRecognizer);
-        }
-
-        private void Transition(GestureRecognizer newRecognizer)
-        {
-            if (newRecognizer == null)
-            {
-                return;
-            }
-
-            if (ActiveRecognizer != null)
-            {
-                if (ActiveRecognizer == newRecognizer)
-                {
-                    return;
-                }
-
-                ActiveRecognizer.CancelGestures();
-                ActiveRecognizer.StopCapturingGestures();
-            }
-
-            newRecognizer.StartCapturingGestures();
-            ActiveRecognizer = newRecognizer;
+            ManipulationRecognizer.StartCapturingGestures();
         }
 
         void OnDestroy()
         {
-            NavigationRecognizer.StopCapturingGestures();
             ManipulationRecognizer.StopCapturingGestures();
         }
 
         private void NavigationRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray ray)
         {
             InteractibleManager.Instance.FocusedGameObject.SendMessage("OnTapped");
-            Transition(ManipulationRecognizer);
         }
 
         private void ManipulationRecognizer_ManipulationStartedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
@@ -84,19 +51,12 @@ namespace Academy.HoloToolkit.Unity
         {
             isManipulating = false;
             InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
-            Transition(NavigationRecognizer);
         }
 
         private void ManipulationRecognizer_ManipulationCanceledEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
             isManipulating = false;
             InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
-            Transition(NavigationRecognizer);
-        }
-
-        private bool FocusSelectable() {
-            GameObject focusedObject = InteractibleManager.Instance.FocusedGameObject;
-            return (focusedObject != null && focusedObject.GetComponent<Interactible>() != null);
         }
     }
 }

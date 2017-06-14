@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -46,10 +47,13 @@ public class BrickManager : MonoBehaviour {
     {
         print(name + " :Manipulate Update");
         Vector3 moveVector = Vector3.zero;
+
+        Vector3 denoisedPosition = DeNoiseVector(position);
+
         // 4.a: Calculate the moveVector as position - manipulationPreviousPosition.
-        moveVector = (position * 2) - manipulationPreviousPosition;
+        moveVector = (denoisedPosition * 2) - manipulationPreviousPosition;
         // 4.a: Update the manipulationPreviousPosition with the current position.
-        manipulationPreviousPosition = position;
+        manipulationPreviousPosition = denoisedPosition;
 
         // 4.a: Increment this transform's position by the moveVector.
         transform.position += moveVector;
@@ -59,5 +63,37 @@ public class BrickManager : MonoBehaviour {
         print(name + " :Manipulate End");
         rb.isKinematic = false;
         rend.material.color = originalColor;
+    }
+
+    private Vector3 DeNoiseVector(Vector3 original)
+    {
+        float x = Mathf.Abs(original.x);
+        float y = Mathf.Abs(original.y);
+        float z = Mathf.Abs(original.z);
+
+        Vector3 v;
+        // x max
+        if (x > y && x > z)
+        {
+            v.x = original.x;
+            v.y = 0;
+            v.z = 0;
+        }
+        // y max
+        else if (y > x && y > z)
+        {
+            v.x = 0;
+            v.y = original.y;
+            v.z = 0;
+        }
+        // z max
+        else 
+        {
+            v.x = 0;
+            v.y = 0;
+            v.z = original.z;
+        }
+
+        return v;
     }
 }
