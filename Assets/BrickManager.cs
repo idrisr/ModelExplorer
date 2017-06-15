@@ -9,11 +9,13 @@ public class BrickManager : MonoBehaviour {
     private Color originalColor;
     private Vector3 manipulationPreviousPosition;
     private Rigidbody rb;
+    private Collider collider;
 
     void Awake()
     {
         rend = GetComponent<Renderer>();
         rb = GetComponent<Rigidbody>();
+        collider = GetComponent<Collider>();
         rend.enabled = true;
         originalColor = rend.material.color;
     }
@@ -41,6 +43,7 @@ public class BrickManager : MonoBehaviour {
         rend.material.color = Color.red;
         print(name + " :Manipulate Start");
         rb.isKinematic = true;
+        collider.enabled = false;
         manipulationPreviousPosition = position;
     }
 
@@ -63,6 +66,7 @@ public class BrickManager : MonoBehaviour {
     void PerformManipulationEnd() {
         print(name + " :Manipulate End");
         rb.isKinematic = false;
+        collider.enabled = true;
         rend.material.color = originalColor;
     }
 
