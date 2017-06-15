@@ -38,25 +38,37 @@ namespace Academy.HoloToolkit.Unity
 
         private void ManipulationRecognizer_ManipulationStartedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
-            isManipulating = true;
-            InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationStart", position);
+            if (InteractibleManager.Instance.FocusedGameObject != null)
+            {
+                isManipulating = true;
+                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationStart", position);
+            }
         }
 
         private void ManipulationRecognizer_ManipulationUpdatedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
-            InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationUpdate", position);
+            if (InteractibleManager.Instance.FocusedGameObject != null)
+            {
+                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationUpdate", position);
+            }
         }
 
         private void ManipulationRecognizer_ManipulationCompletedEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
-            isManipulating = false;
-            InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
+            if (InteractibleManager.Instance.FocusedGameObject != null)
+            {
+                isManipulating = false;
+                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
+            }
         }
 
         private void ManipulationRecognizer_ManipulationCanceledEvent(InteractionSourceKind source, Vector3 position, Ray ray)
         {
-            isManipulating = false;
-            InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
+            if (InteractibleManager.Instance.FocusedGameObject != null)
+            {
+                isManipulating = false;
+                InteractibleManager.Instance.FocusedGameObject.SendMessage("PerformManipulationEnd");
+            }
         }
     }
 }

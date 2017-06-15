@@ -38,6 +38,7 @@ public class BrickManager : MonoBehaviour {
     
     void PerformManipulationStart(Vector3 position)
     {
+        rend.material.color = Color.red;
         print(name + " :Manipulate Start");
         rb.isKinematic = true;
         manipulationPreviousPosition = position;
@@ -48,7 +49,7 @@ public class BrickManager : MonoBehaviour {
         print(name + " :Manipulate Update");
         Vector3 moveVector = Vector3.zero;
 
-        Vector3 denoisedPosition = DeNoiseVector(position);
+        Vector3 denoisedPosition = position;
 
         // 4.a: Calculate the moveVector as position - manipulationPreviousPosition.
         moveVector = (denoisedPosition * 2) - manipulationPreviousPosition;
