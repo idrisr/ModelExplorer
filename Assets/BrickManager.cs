@@ -37,6 +37,10 @@ public class BrickManager : MonoBehaviour {
         print(name + " :On Tapped");
         rend.material.color = Color.red;
     }
+
+    public void RotateBrick() {
+        transform.Rotate(0, 90, 0);
+    }
     
     void PerformManipulationStart(Vector3 position)
     {
