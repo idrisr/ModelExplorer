@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44979447, g: 0.49701643, b: 0.5603539, a: 1}
+  m_IndirectSpecularColor: {r: 0.44977677, g: 0.49699938, b: 0.5603451, a: 1}
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -319,7 +319,7 @@ Transform:
   m_PrefabInternal: {fileID: 1654554004}
   m_GameObject: {fileID: 89684139}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.82, y: 3.7, z: -11.23}
+  m_LocalPosition: {x: -0.82, y: 1.82, z: -5.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -694,7 +694,7 @@ Transform:
   m_GameObject: {fileID: 375953576}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_Children:
   - {fileID: 1341634418}
   - {fileID: 1767372917}
@@ -1461,27 +1461,11 @@ Transform:
   m_PrefabParentObject: {fileID: 4921100517590640, guid: ecb678d954b53894081bb40c81f3c8f5,
     type: 2}
   m_PrefabInternal: {fileID: 330839520}
---- !u!1 &721945071 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1434207908690806, guid: ecb678d954b53894081bb40c81f3c8f5,
-    type: 2}
-  m_PrefabInternal: {fileID: 610109339}
 --- !u!4 &721945075 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4921100517590640, guid: ecb678d954b53894081bb40c81f3c8f5,
     type: 2}
   m_PrefabInternal: {fileID: 610109339}
---- !u!114 &721945077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 721945071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4e5bb8e3f85edb40b3e3c6d9be02daa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &726181718 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4921100517590640, guid: ecb678d954b53894081bb40c81f3c8f5,
@@ -1869,6 +1853,10 @@ Prefab:
       propertyPath: drawVisualMeshes
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010302963436, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 2}
   m_IsPrefabParent: 0
@@ -2165,6 +2153,7 @@ GameObject:
   - component: {fileID: 1154649677}
   - component: {fileID: 1154649679}
   - component: {fileID: 1154649678}
+  - component: {fileID: 1154649680}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -2232,6 +2221,17 @@ MonoBehaviour:
   Keywords:
   - Keyword: Reset Tower
     KeyCode: 0
+--- !u!114 &1154649680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1154649676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f122ca4ae6b527e4798205becf9a0550, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1209201201
 Prefab:
   m_ObjectHideFlags: 0
@@ -2892,11 +2892,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 402774, guid: 27bdbc251483ef547b6193bb312653e8, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -11.23
+      value: -5.86
       objectReference: {fileID: 0}
     - target: {fileID: 402774, guid: 27bdbc251483ef547b6193bb312653e8, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 3.7
+      value: 1.82
       objectReference: {fileID: 0}
     - target: {fileID: 402774, guid: 27bdbc251483ef547b6193bb312653e8, type: 2}
       propertyPath: m_LocalPosition.x
