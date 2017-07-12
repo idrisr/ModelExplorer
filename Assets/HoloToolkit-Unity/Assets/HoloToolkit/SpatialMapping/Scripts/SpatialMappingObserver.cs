@@ -188,8 +188,10 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private void Update()
         {
+          // if the observer is running and there's not outstanding mesh request
             if ((ObserverState == ObserverStates.Running) && (outstandingMeshRequest == null))
             {
+              // if there's something in the queue
                 if (surfaceWorkQueue.Count > 0)
                 {
                     // We're using a simple first-in-first-out rule for requesting meshes, but a more sophisticated algorithm could prioritize
@@ -368,7 +370,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                     observer.SetVolumeAsAxisAlignedBox(origin, extents);
                     break;
             }
-            
+
         }
 
         /// <summary>
